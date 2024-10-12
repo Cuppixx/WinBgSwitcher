@@ -5,10 +5,11 @@
 from configparser import ConfigParser
 from ctypes import windll
 from keyboard import add_hotkey, unhook_all, wait # type: ignore
-from os import getenv, listdir, path, remove, scandir
+from os import getenv, path, remove, scandir
+from pythoncom import CoInitialize, CoUninitialize # type: ignore
 from random import choice
-from shutil import copy
 from sys import executable
+from winshell import shortcut # type: ignore
 
 config_object = ConfigParser()
 with open('config.ini', 'r') as file_object:
@@ -71,20 +72,28 @@ def toggle_wallpaper():
 def toggle_auto_start():
     '''Toggle the auto start.'''
     try:
+        CoInitialize()
+
         startup_folder = path.join(getenv('APPDATA'), 'Microsoft', 'Windows', 'Start Menu', 'Programs', 'Startup')
-        exe_path = executable
-        startup_exe_path = path.join(startup_folder, path.basename(exe_path))
+        shortcut_lnk = path.join(startup_folder, 'win_bg_switcher.lnk')
 
-        path_exists = path.exists(startup_exe_path)
+        path_exists = path.exists(shortcut_lnk)
 
-        if not path_exists: copy(exe_path, startup_exe_path)
-        else: remove(startup_exe_path)
+        if not path_exists:
+            with shortcut(shortcut_lnk) as link:
+                link.path = executable
+                link.description = 'Windows Background Switcher'
+                link.arguments = ' '
+        else: 
+            remove(shortcut_lnk)
 
         config_object.set('Debug', 'exe_auto_start', str(not path_exists))
         save_config()
 
     except Exception as e:
-         print(f'Exception thrown ...\n{e}')
+        print(f'Exception thrown ...\n{e}')
+    finally:
+        CoUninitialize()
 
 
 try:
