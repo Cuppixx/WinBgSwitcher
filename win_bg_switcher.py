@@ -8,7 +8,7 @@ from keyboard import add_hotkey, unhook_all, wait # type: ignore
 from os import getenv, path, remove, scandir
 from pythoncom import CoInitialize, CoUninitialize # type: ignore
 from random import choice
-from sys import executable
+from sys import executable, exit
 from winshell import shortcut # type: ignore
 
 config_object = ConfigParser()
@@ -23,7 +23,7 @@ selected_path = config_object.get('Debug', 'current_folder')
 def clean_exit():
     '''Unhook all hotkeys and exit the program cleanly.'''
     unhook_all()
-    exit()
+    exit(0)
 
 
 def save_config():
