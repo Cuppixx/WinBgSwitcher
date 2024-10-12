@@ -11,8 +11,10 @@ from random import choice
 from sys import executable, exit
 from winshell import shortcut # type: ignore
 
+config_path = path.join(path.dirname(executable), 'config.ini')
+
 config_object = ConfigParser()
-with open('config.ini', 'r') as file_object:
+with open(config_path, 'r') as file_object:
     config_object.read_file(file_object)
 
 folder_1_path = config_object.get('Folders', 'folder1')
@@ -28,7 +30,7 @@ def clean_exit():
 
 def save_config():
     '''Write the current configuration to the file.'''
-    with open('config.ini', 'w') as file_object:
+    with open(config_path, 'w') as file_object:
         config_object.write(file_object)
 
 
