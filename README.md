@@ -88,6 +88,8 @@ The entire project is licensed under the MIT License. If you want, you can go ah
 
 [WinBgSwitcher](https://github.com/Cuppixx/WinBgSwitcher)
 
+[sequential_renamer.bat](https://gist.github.com/Cuppixx/5c4b4bca0cdd31ba457480c27727e7db)
+
 More fun links to come ....
 
 ### Reference and Template Sources
